@@ -26,7 +26,7 @@ resources:
 
 # Add this to the bottom of networking-lab.yaml to enable the firewalling configuration
 
-- name: nw-testing-firewall
+- name: nw-testing
   type: qwiklabs-firewall-template.jinja
   properties:
     network: nw-testing
