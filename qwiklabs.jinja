@@ -97,3 +97,7 @@ resources:
     network: {{ NETWORK_NAME }}
     range: 10.40.0.0/16
     region: asia-east1
+- name: nw-testing-firewall
+  type: qwiklabs-firewall-template.jinja
+  properties:
+    network: nw-testing
