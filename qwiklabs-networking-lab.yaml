@@ -18,6 +18,7 @@ imports:
 - path: qwiklabs-subnetwork-template.jinja
 - path: qwiklabs.jinja
 - path: qwiklabs-firewall-template.jinja
+- path: pan-fw.jinja
 
 resources:
 - name: compute-engine-setup

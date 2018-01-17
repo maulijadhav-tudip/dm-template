@@ -1,103 +1,73 @@
-{#
-Copyright 2016 Google Inc. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-#}
-{% set  ZONE = "asia-east1-a" %}
-{% set  NETWORK_NAME = "nw-testing" %}
-
 resources:
-- name: instance-1
+- name: web1
   type: qwiklabs-vm-template.jinja
   properties:
     machineType: n1-standard-1
-    zone: {{ ZONE }}
-    network: {{ NETWORK_NAME }}
-    subnetwork: asia-east1
-- name: instance-2
-  type: qwiklabs-vm-template.jinja
-  properties:
-    machineType: n1-standard-1
-    zone: {{ ZONE }}
-    network: {{ NETWORK_NAME }}
-    subnetwork: asia-east1
-- name: instance-3
-  type: qwiklabs-vm-template.jinja
-  properties:
-    machineType: n1-standard-2
-    zone: {{ ZONE }}
-    network: {{ NETWORK_NAME }}
-    subnetwork: asia-east1
-- name: instance-4
-  type: qwiklabs-vm-template.jinja
+    zone: asia-east1-a
+    network: web-net
+    subnetwork: newwebsubnet
+- name: panfw
+  type: pan-fw.jinja
   properties:
     machineType: n1-standard-4
-    zone: {{ ZONE }}
-    network: {{ NETWORK_NAME }}
-    subnetwork: asia-east1
-- name: instance-5
-  type: qwiklabs-vm-template.jinja
+    zone: asia-east1-a
+    network: web-net
+    subnetwork: newwebsubnet    
+- name: mgmt-net
+  type: compute.v1.network
   properties:
-    machineType: n1-standard-4
-    zone: {{ ZONE }}
-    network: {{ NETWORK_NAME }}
-    subnetwork: asia-east1
-- name: instance-6
-  type: qwiklabs-vm-template.jinja
+    autoCreateSubnetworks: false
+    ip: 192.168.0.0/24
+- name: public-net
+  type: compute.v1.network
   properties:
-    machineType: n1-standard-8
-    zone: {{ ZONE }}
-    network: {{ NETWORK_NAME }}
-    subnetwork: asia-east1
-- name: instance-7
-  type: qwiklabs-vm-template.jinja
+    autoCreateSubnetworks: false
+    ip: 192.168.1.0/24
+- name: web-net
+  type: compute.v1.network
   properties:
-    machineType: f1-micro
-    zone: {{ ZONE }}
-    network: {{ NETWORK_NAME }}
-    subnetwork: asia-east1
-- name: {{ NETWORK_NAME }}
-  type: qwiklabs-network-template.jinja
-- name: us-west1-s1
+    autoCreateSubnetworks: false
+    ip: 192.168.2.0/24
+- name: db-net
+  type: compute.v1.network
+  properties:
+    autoCreateSubnetworks: false
+    ip: 192.168.3.0/24
+- name: newdbsubnet
   type: qwiklabs-subnetwork-template.jinja
   properties:
-    network: {{ NETWORK_NAME }}
-    range: 10.10.0.0/16    
-    region: us-west1
-- name: us-west1-s2
+    network: db-net
+    range: 192.168.3.0/24
+    region: asia-southeast1
+- name: newmgmtsubnet
   type: qwiklabs-subnetwork-template.jinja
   properties:
-    network: {{ NETWORK_NAME }}
-    range: 10.11.0.0/16    
-    region: us-west1
-- name: us-east1
+    network: db-net
+    range: 192.168.0.0/24
+    region: asia-southeast1    
+- name: newpublicsubnet
   type: qwiklabs-subnetwork-template.jinja
   properties:
-    network: {{ NETWORK_NAME }}
-    range: 10.20.0.0/16    
-    region: us-east1
-- name: europe-west1
-  type: qwiklabs-subnetwork-template.jinja
-  properties:
-    network: {{ NETWORK_NAME }}
-    range: 10.30.0.0/16    
+    network: public-net
+    range: 192.168.1.0/24  
     region: europe-west1
-- name: asia-east1
+- name: newwebsubnet
   type: qwiklabs-subnetwork-template.jinja
   properties:
-    network: {{ NETWORK_NAME }}
-    range: 10.40.0.0/16
+    network: web-net
+    range: 192.168.2.0/24
     region: asia-east1
-- name: nw-testing-firewall
+- name: web-net-firewall
   type: qwiklabs-firewall-template.jinja
   properties:
-    network: nw-testing
+    network: web-net 
+- name: mgmt-net-firewall
+  type: qwiklabs-firewall-template.jinja
+  properties:
+    network: mgmt-net 
+- name: public-net-firewall
+  type: qwiklabs-firewall-template.jinja
+  properties:
+    network: public-net     
+    
+    
